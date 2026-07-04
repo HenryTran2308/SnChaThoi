@@ -43,42 +43,18 @@ window.addEventListener("load", () => {
 });
 
 const bgMusic = document.querySelector("#bgMusic");
-const musicBtn = document.querySelector("#musicBtn");
 
-let isMusicPlaying = false;
+bgMusic.volume = 0.45;
 
-function playMusic() {
-  bgMusic.volume = 0.45;
-
-  bgMusic.play().then(() => {
-    isMusicPlaying = true;
-    musicBtn.textContent = "🔊";
-    musicBtn.classList.add("is-playing");
-  }).catch(() => {
+function startMusic() {
+  bgMusic.play().catch(() => {
     console.log("Trình duyệt chặn tự phát nhạc.");
   });
 }
 
-function pauseMusic() {
-  bgMusic.pause();
-  isMusicPlaying = false;
-  musicBtn.textContent = "🎵";
-  musicBtn.classList.remove("is-playing");
-}
-
-musicBtn.addEventListener("click", () => {
-  if (isMusicPlaying) {
-    pauseMusic();
-  } else {
-    playMusic();
-  }
-});
-
-document.addEventListener("click", () => {
-  if (!isMusicPlaying) {
-    playMusic();
-  }
-}, { once: true });
+document.addEventListener("click", startMusic, { once: true });
+document.addEventListener("touchstart", startMusic, { once: true });
+document.addEventListener("keydown", startMusic, { once: true });
 
 function scrollToMessage(e) {
   e.preventDefault();
