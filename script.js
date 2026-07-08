@@ -16,57 +16,124 @@ const revealObserver = new IntersectionObserver(
 
 revealItems.forEach((item) => revealObserver.observe(item));
 
-function launchConfetti(amount = 90) {
-  const colors = ["#f3d99a", "#c99738", "#ffffff", "#a94b5d", "#6b1f2b"];
+function launchConfetti(amount = 10) {
 
-  for (let index = 0; index < amount; index += 1) {
+  const colors = [
+    "#ffffff",
+    "#f3d99a",
+    "#c99738",
+    "#b22222",
+    "#8b0000"
+  ];
+
+  const shapes = ["square", "rect", "circle"];
+
+  for (let i = 0; i < amount; i++) {
+
     const piece = document.createElement("span");
-    const size = Math.random() * 8 + 7;
 
     piece.className = "confetti-piece";
-    piece.style.left = `${Math.random() * 100}%`;
-    piece.style.width = `${size}px`;
-    piece.style.height = `${size * 1.45}px`;
-    piece.style.background = colors[Math.floor(Math.random() * colors.length)];
-    piece.style.animationDelay = `${Math.random() * 0.5}s`;
-    piece.style.setProperty("--drift", `${Math.random() * 240 - 120}px`);
+
+    const size = Math.random() * 5 + 3;
+
+    const shape = shapes[Math.floor(Math.random() * shapes.length)];
+
+    if (shape === "circle") {
+
+      piece.style.width = size + "px";
+      piece.style.height = size + "px";
+      piece.style.borderRadius = "50%";
+
+    } else if (shape === "rect") {
+
+      piece.style.width = size + "px";
+      piece.style.height = size * 1.8 + "px";
+      piece.style.borderRadius = "2px";
+
+    } else {
+
+      piece.style.width = size + "px";
+      piece.style.height = size + "px";
+      piece.style.borderRadius = "1px";
+
+    }
+
+    piece.style.left = Math.random() * 100 + "%";
+
+    piece.style.background =
+      colors[Math.floor(Math.random() * colors.length)];
+
+    piece.style.opacity = .8;
+
+    piece.style.animationDuration =
+      (Math.random() * 3 + 5) + "s";
+
+    piece.style.animationDelay =
+      Math.random() + "s";
+
+    piece.style.setProperty(
+      "--drift",
+      `${Math.random() * 120 - 60}px`
+    );
+
+    piece.style.transform =
+      `rotate(${Math.random() * 360}deg)`;
 
     confettiLayer.appendChild(piece);
-    window.setTimeout(() => piece.remove(), 2600);
+
+    setTimeout(() => {
+      piece.remove();
+    }, 9000);
+
   }
+
 }
 
-celebrateBtn.addEventListener("click", () => launchConfetti());
+if (celebrateBtn) {
+  celebrateBtn.addEventListener("click", () => launchConfetti());
+}
 
 window.addEventListener("load", () => {
-  window.setTimeout(() => launchConfetti(55), 650);
+
+  launchConfetti(35);
+
+  setInterval(() => {
+    launchConfetti(6);
+  }, 500);
+
 });
 
 const bgMusic = document.querySelector("#bgMusic");
 
-bgMusic.volume = 0.45;
+if (bgMusic) {
+  bgMusic.volume = 0.45;
 
-function startMusic() {
-  bgMusic.play().catch(() => {
-    console.log("Trình duyệt chặn tự phát nhạc.");
-  });
+  function startMusic() {
+    bgMusic.play().catch(() => {
+      console.log("Trình duyệt chặn tự phát nhạc.");
+    });
+  }
+
+  document.addEventListener("click", startMusic, { once: true });
+  document.addEventListener("touchstart", startMusic, { once: true });
+  document.addEventListener("keydown", startMusic, { once: true });
 }
-
-document.addEventListener("click", startMusic, { once: true });
-document.addEventListener("touchstart", startMusic, { once: true });
-document.addEventListener("keydown", startMusic, { once: true });
 
 function scrollToMessage(e) {
   e.preventDefault();
 
   const message = document.querySelector("#message");
+  const navbar = document.querySelector(".birthday-nav");
 
-  const navbarHeight = document.querySelector(".birthday-nav").offsetHeight;
+  if (!message || !navbar) return;
+
+  const navbarHeight = navbar.offsetHeight;
 
   const y =
     message.getBoundingClientRect().top +
     window.pageYOffset -
-    navbarHeight + 75; // cách navbar thêm 20px
+    navbarHeight -
+    10;
 
   window.scrollTo({
     top: y,
@@ -74,10 +141,13 @@ function scrollToMessage(e) {
   });
 }
 
-document
-  .querySelector("#openMessageBtn")
-  .addEventListener("click", scrollToMessage);
+const openMessageBtn = document.querySelector("#openMessageBtn");
+const messageNav = document.querySelector("#messageNav");
 
-document
-  .querySelector("#messageNav")
-  .addEventListener("click", scrollToMessage);
+if (openMessageBtn) {
+  openMessageBtn.addEventListener("click", scrollToMessage);
+}
+
+if (messageNav) {
+  messageNav.addEventListener("click", scrollToMessage);
+}

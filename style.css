@@ -28,7 +28,7 @@ body {
 }
 
 .birthday-nav {
-  background: rgba(248, 243, 234, 0.9);
+  background: rgba(248, 243, 234, 0.94);
   border-bottom: 1px solid var(--line);
   backdrop-filter: blur(16px);
 }
@@ -53,8 +53,9 @@ body {
   overflow: hidden;
   color: #fff;
   background:
-    linear-gradient(115deg, rgba(24, 32, 37, 0.92), rgba(107, 31, 43, 0.84)),
-    url("https://images.unsplash.com/photo-1519671482749-fd09be7ccebf?auto=format&fit=crop&w=1800&q=80") center/cover;
+    radial-gradient(circle at 78% 28%, rgba(201, 151, 56, 0.18), transparent 28%),
+    linear-gradient(115deg, rgba(16, 22, 26, 0.96), rgba(65, 18, 27, 0.92)),
+    url("https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=1800&q=80") center/cover;
 }
 
 section,
@@ -138,10 +139,10 @@ h1 span {
   position: relative;
   z-index: 1;
   padding: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.1);
-  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.28);
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.11);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.32);
 }
 
 .portrait-photo {
@@ -160,7 +161,7 @@ h1 span {
 .message-card {
   padding: clamp(36px, 6vw, 64px);
   border: 1px solid var(--line);
-  border-radius: 8px;
+  border-radius: 10px;
   background: var(--cream);
   box-shadow: 0 20px 60px rgba(24, 32, 37, 0.08);
   text-align: left;
@@ -183,6 +184,11 @@ h1 span {
   color: var(--wine);
   font-size: clamp(2.2rem, 5vw, 4.2rem);
   line-height: 1.08;
+}
+
+.gallery-title {
+  max-width: none;
+  white-space: nowrap;
 }
 
 .message-card p {
@@ -213,15 +219,19 @@ h1 span {
   height: 100%;
   padding: 20px;
   border: 1px solid var(--line);
-  border-radius: 8px;
+  border-radius: 10px;
   background: #fff;
+}
+
+.featured-gallery .photo-card {
+  padding: 18px;
 }
 
 .photo-img {
   display: block;
   width: 100%;
   aspect-ratio: 16 / 10;
-  margin-bottom: 20px;
+  margin-bottom: 0;
   border-radius: 6px;
   object-fit: contain;
   background: #fffaf4;
@@ -237,10 +247,13 @@ h1 span {
   width: 100%;
   height: auto;
   margin: 0 0 18px;
-  break-inside: avoid;
-  border: 6px solid #fff;
-  border-radius: 8px;
+  padding: 8px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 10px;
   box-shadow: 0 14px 32px rgba(24, 32, 37, 0.1);
+  break-inside: avoid;
+  object-fit: contain;
 }
 
 .photo-card h3,
@@ -299,16 +312,24 @@ h1 span {
 .confetti-piece {
   position: absolute;
   top: -20px;
-  width: 10px;
-  height: 16px;
-  border-radius: 2px;
-  animation: confetti-fall 1.9s linear forwards;
+  animation: confetti-fall linear forwards;
+  pointer-events: none;
+  will-change: transform;
 }
 
 @keyframes confetti-fall {
-  to {
+  0% {
+    transform: translate3d(0, -20px, 0) rotate(0deg);
+    opacity: 0;
+  }
+
+  10% {
+    opacity: .85;
+  }
+
+  100% {
     transform: translate3d(var(--drift), 110vh, 0) rotate(720deg);
-    opacity: 0.2;
+    opacity: 0;
   }
 }
 
@@ -336,7 +357,13 @@ h1 span {
   }
 
   .album-grid {
-    column-count: 2;
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 767.98px) {
+  .gallery-title {
+    white-space: normal;
   }
 }
 
@@ -373,8 +400,5 @@ h1 span {
 
   .album-grid img {
     margin-bottom: 12px;
-    border-width: 4px;
   }
-
-
 }
